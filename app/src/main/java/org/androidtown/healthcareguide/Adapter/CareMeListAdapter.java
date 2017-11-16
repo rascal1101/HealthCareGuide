@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import org.androidtown.healthcareguide.Fragment.CareMeFragment;
 import org.androidtown.healthcareguide.Model.User;
 import org.androidtown.healthcareguide.R;
 
@@ -22,9 +21,9 @@ public class CareMeListAdapter extends BaseAdapter {
     List<User> list;
     LayoutInflater inflater;
 
-    public CareMeListAdapter(Context context) {
+    public CareMeListAdapter(Context context, List<User> list) {
         this.context = context;
-        list = CareMeFragment.getList();
+        this.list = list;
         inflater = (LayoutInflater)context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
     }
 
