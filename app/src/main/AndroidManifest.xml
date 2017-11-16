@@ -18,7 +18,8 @@
         </activity>
         <activity android:name=".Activity.SignupActivity" />
         <activity android:name=".Activity.CarelistForDoctorActivity" />
-        <activity android:name=".Activity.CarelistActivity"></activity>
+        <activity android:name=".Activity.CarelistActivity" />
+        <activity android:name=".Activity.UserStateGraphActivity"></activity>
     </application>
 
 </manifest>
