@@ -58,6 +58,27 @@
         android:hint="핸드폰 번호"
         android:inputType="phone"/>
 
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp">
+
+        <RadioButton
+            android:id="@+id/normal_radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="일반"/>
+
+        <RadioButton
+            android:id="@+id/doctor_radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="의사"/>
+
+    </RadioGroup>
+
     <Button
         android:id="@+id/sign_up_button2"
         android:layout_width="wrap_content"
