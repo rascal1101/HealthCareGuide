@@ -9,7 +9,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.androidtown.healthcareguide.Fragment.CaredPeopleFragment;
 import org.androidtown.healthcareguide.Model.User;
 import org.androidtown.healthcareguide.R;
 
@@ -19,14 +18,14 @@ import java.util.List;
  * Created by MSI on 2017-11-13.
  */
 
-public class CarePeopleListAdapter extends BaseAdapter {
+public class CareListForDoctorAdapter extends BaseAdapter {
     Context context;
     List<User> list;
     LayoutInflater inflater;
 
-    public CarePeopleListAdapter(Context context) {
+    public CareListForDoctorAdapter(Context context, List<User> list) {
         this.context = context;
-        list = CaredPeopleFragment.getList();
+        this.list = list;
         inflater = (LayoutInflater)context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
     }
 
