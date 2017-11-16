@@ -3,83 +3,57 @@ package org.androidtown.healthcareguide.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+import android.widget.ListView;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.androidtown.healthcareguide.Adapter.CareListForDoctorAdapter;
 import org.androidtown.healthcareguide.Model.User;
 import org.androidtown.healthcareguide.R;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
 
-    private TextView emailtv;
-    private Button logoutButton;
-    private FirebaseAuth mAuth;
-    private User user;
-    DatabaseReference databaseReference;
+public class CarelistForDoctorActivity extends AppCompatActivity {
+
+    private User currentUser;
+    private ListView listView;
+    private List<User> list;
+    private CareListForDoctorAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_carelist_for_doctor);
 
-        mAuth = FirebaseAuth.getInstance();
+        setCurrentUser();
+        initView();
+        initAdapter();
+        getListFromFirebase();
 
-        Intent intent = getIntent();
-        String uid = intent.getStringExtra("uid");
-        String email = intent.getStringExtra("email");
-        databaseReference = FirebaseDatabase.getInstance().getReference("users");
-
-        user = new User();
-        user.setUid(uid);
-        user.setEmail(email);
-
-        logoutButton = findViewById(R.id.log_out_button);
-
-        emailtv = findViewById(R.id.email);
-        emailtv.setText("uid : " + uid + "\nemail : " + email);
-
-
-        readUser();
-
-
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mAuth.signOut();
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
     }
 
-    public void readUser(){
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+    public void getListFromFirebase(){
+        DatabaseReference dr = FirebaseDatabase.getInstance().getReference();
+        dr.child("users").child(currentUser.getUid()).child("cpgroup").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    try{
-                        String key = snapshot.getKey();
-                        if(user.getUid().equals(key)){
-                            User tempUser = snapshot.getValue(User.class);
-                            user.setUser(tempUser);
-                            emailtv.setText("uid : " + user.getUid() + "\nemail : " + user.getEmail() +
-                            "\nname : " + user.getName() + "\nphone : " + user.getPhone());
-
-                            break;
-                        }
-                    }catch(Exception e){
-
-                    }
+                list.clear();
+                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                    String email = ds.child("email").getValue(String.class);
+                    String name = ds.child("name").getValue(String.class);
+                    String uid = ds.getKey();
+                    User user = new User();
+                    user.setEmail(email);
+                    user.setName(name);
+                    user.setUid(uid);
+                    list.add(user);
                 }
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -87,5 +61,23 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void initAdapter(){
+        list = new ArrayList<>();
+        adapter = new CareListForDoctorAdapter(getApplicationContext(),list);
+        listView.setAdapter(adapter);
+    }
+
+    public void initView(){
+        listView = findViewById(R.id.d_cared_people_list);
+    }
+
+    public void setCurrentUser(){
+        Intent intent = getIntent();
+        currentUser = new User();
+        currentUser.setUid(intent.getStringExtra("uid"));
+        currentUser.setName(intent.getStringExtra("name"));
+        currentUser.setEmail(intent.getStringExtra("email"));
     }
 }
