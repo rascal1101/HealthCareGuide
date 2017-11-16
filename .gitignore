@@ -4,6 +4,7 @@
 /.idea/workspace.xml
 /.idea/libraries
 /.idea/
+/app/google-services.json
 .DS_Store
 /build
 /captures
