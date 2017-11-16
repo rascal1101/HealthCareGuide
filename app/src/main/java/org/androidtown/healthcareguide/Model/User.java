@@ -9,6 +9,15 @@ public class User {
     private String email;
     private String phone;
     private String uid;
+    private String mode;
+
+    public String getMode() {
+        return mode;
+    }
+
+    public void setMode(String mode) {
+        this.mode = mode;
+    }
 
     public void setUid(String uid) {
         this.uid = uid;
