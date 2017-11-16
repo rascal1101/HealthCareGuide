@@ -9,12 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
 import org.androidtown.healthcareguide.Fragment.CareMeFragment;
 import org.androidtown.healthcareguide.Fragment.CaredPeopleFragment;
 import org.androidtown.healthcareguide.Model.User;
@@ -36,34 +30,28 @@ public class CarelistActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_carelist);
 
+        setCurrentUser();
+        initView(savedInstanceState);
+    }
+
+    public void setCurrentUser(){
         Intent intent = getIntent();
         uid = intent.getStringExtra("uid");
         email = intent.getStringExtra("email");
+        name = intent.getStringExtra("name");
         currentUser = new User();
+        currentUser.setUid(uid);
+        currentUser.setEmail(email);
+        currentUser.setName(name);
+    }
 
-        DatabaseReference dr = FirebaseDatabase.getInstance().getReference();
-        dr.child("users").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                name = dataSnapshot.child("name").getValue(String.class);
-                currentUser.setUid(uid);
-                currentUser.setName(name);
-                currentUser.setEmail(email);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+    public void initView(Bundle savedInstanceState){
         caredPeopleFragment = new CaredPeopleFragment();
         careMeFragment = new CareMeFragment();
-
 
         container = findViewById(R.id.carelist_container);
         caredPeopleButton = findViewById(R.id.cared_people_button);
         careMeButton = findViewById(R.id.care_me_button);
-
         if (savedInstanceState == null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.add(R.id.carelist_container,caredPeopleFragment);
@@ -73,11 +61,7 @@ public class CarelistActivity extends AppCompatActivity {
             ft.commit();
         }
 
-
-
-
-
-            caredPeopleButton.setOnClickListener(new View.OnClickListener() {
+        caredPeopleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getSupportFragmentManager().beginTransaction()
@@ -98,6 +82,5 @@ public class CarelistActivity extends AppCompatActivity {
                         .commit();
             }
         });
-
     }
 }

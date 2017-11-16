@@ -15,7 +15,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.androidtown.healthcareguide.R;
 
@@ -28,12 +32,14 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginButton;
     private Button signupButton;
     private DatabaseReference databaseReference;
+    private FirebaseDatabase database;
     private EditText emailEditText;
     private EditText passwordEditText;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private String uid;
     private String email;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +51,9 @@ public class LoginActivity extends AppCompatActivity {
         signupButton = findViewById(R.id.sign_up_button);
         emailEditText = findViewById(R.id.login_email_edit_text);
         passwordEditText = findViewById(R.id.login_password_edit_text);
+
+        database = FirebaseDatabase.getInstance();
+
 
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -85,11 +94,34 @@ public class LoginActivity extends AppCompatActivity {
                            @Override public void onComplete(@NonNull Task<AuthResult> task) {
                                if(task.isSuccessful()){
                                    Log.d("rascal","Sign In Success");
-                                   Intent intent = new Intent(LoginActivity.this, CarelistActivity.class);
-                                   intent.putExtra("uid", uid);
-                                   intent.putExtra("email", email);
-                                   startActivity(intent);
-                                   finish();
+                                   database.getReference().child("users").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+                                       @Override
+                                       public void onDataChange(DataSnapshot dataSnapshot) {
+                                           String name = dataSnapshot.child("name").getValue(String.class);
+                                           String mode = dataSnapshot.child("mode").getValue(String.class);
+                                           if(mode.equals("normal")){
+                                               Intent intent = new Intent(LoginActivity.this, CarelistActivity.class);
+                                               intent.putExtra("uid", uid);
+                                               intent.putExtra("email", email);
+                                               intent.putExtra("name",name);
+                                               startActivity(intent);
+                                               finish();
+                                           }else{
+                                               Intent intent = new Intent(LoginActivity.this, CarelistForDoctorActivity.class);
+                                               intent.putExtra("uid", uid);
+                                               intent.putExtra("email", email);
+                                               intent.putExtra("name",name);
+                                               startActivity(intent);
+                                               finish();
+                                           }
+                                       }
+
+                                       @Override
+                                       public void onCancelled(DatabaseError databaseError) {
+
+                                       }
+                                   });
+
                                } else {
                                    Log.d("rascal","Sign In Fail");
                                    Toast.makeText(LoginActivity.this, "Sign In Fail", Toast.LENGTH_SHORT).show();

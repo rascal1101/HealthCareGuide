@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,6 +34,9 @@ public class SignupActivity extends AppCompatActivity {
     EditText passwordEditText;
     EditText nameEditText;
     EditText phoneEditText;
+    RadioButton normalRadio;
+    RadioButton doctorRadio;
+
 
 
     @Override
@@ -45,6 +49,8 @@ public class SignupActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.sign_up_password_edit_text);
         nameEditText = findViewById(R.id.sign_up_name_edit_text);
         phoneEditText = findViewById(R.id.sign_up_phone_edit_text);
+        normalRadio = findViewById(R.id.normal_radio);
+        doctorRadio = findViewById(R.id.doctor_radio);
 
         signupButton2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +78,10 @@ public class SignupActivity extends AppCompatActivity {
                             userModel.setEmail(emailEditText.getText().toString());
                             userModel.setName(nameEditText.getText().toString());
                             userModel.setPhone(phoneEditText.getText().toString());
+                            if(normalRadio.isChecked())
+                                userModel.setMode("normal");
+                            else
+                                userModel.setMode("doctor");
                             mDatabasereference.child("users").child(user.getUid()).setValue(userModel);
                         } else {
                             // If sign in fails, display a message to the user.
