@@ -31,13 +31,10 @@ import java.util.List;
 public class CareMeFragment extends Fragment {
 
     private Button addCaringMeButton;
-    private static ListView careMeListView;
-    private static List<User> list;
-    private String uid;
-    private String email;
-    private String name;
+    private ListView careMeListView;
+    private List<User> list;
     private User currentUser;
-    private static CareMeListAdapter adapter;
+    private CareMeListAdapter adapter;
 
     public CareMeFragment() {
         // Required empty public constructor
@@ -51,17 +48,20 @@ public class CareMeFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_careme, container, false);
 
-        addCaringMeButton = view.findViewById(R.id.add_caring_me_button);
-        careMeListView = view.findViewById(R.id.care_me_list);
-
-        getCurrentUser();
+        setCurrentUser();
+        initView(view);
         initAdapter();
         getListFromFirebase();
 
+        return view;
+    }
+
+    public void initView(View view){
+        addCaringMeButton = view.findViewById(R.id.add_caring_me_button);
+        careMeListView = view.findViewById(R.id.care_me_list);
         addCaringMeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,40 +69,34 @@ public class CareMeFragment extends Fragment {
                 dialog.show();
             }
         });
-
-
-        return view;
     }
 
-    public void getCurrentUser(){
+    public void setCurrentUser(){
         currentUser = new User();
-        uid = ((CarelistActivity)getActivity()).uid;
-        email = ((CarelistActivity)getActivity()).email;
-        name =  ((CarelistActivity)getActivity()).name;
         currentUser = ((CarelistActivity)getActivity()).currentUser;
     }
 
     public void initAdapter(){
         list = new ArrayList<>();
-        adapter = new CareMeListAdapter(getContext());
+        adapter = new CareMeListAdapter(getContext(),list);
         careMeListView.setAdapter(adapter);
     }
 
     public void getListFromFirebase(){
         DatabaseReference dr = FirebaseDatabase.getInstance().getReference();
-        dr.child("users").child(uid).child("cmgroup").addListenerForSingleValueEvent(new ValueEventListener() {
+        dr.child("users").child(currentUser.getUid()).child("cmgroup").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                list.clear();
                 for(DataSnapshot ds : dataSnapshot.getChildren()){
-                    //Toast.makeText(getContext(),ds.child("email").getValue(String.class) , Toast.LENGTH_SHORT).show();
                     String email = ds.child("email").getValue(String.class);
                     String name = ds.child("name").getValue(String.class);
                     User user = new User();
                     user.setEmail(email);
                     user.setName(name);
                     list.add(user);
-                    careMeListView.setAdapter(adapter);
                 }
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -110,17 +104,7 @@ public class CareMeFragment extends Fragment {
 
             }
         });
+
     }
 
-    public static ListView getCareMeListView() {
-        return careMeListView;
-    }
-
-    public static CareMeListAdapter getCareMeListAdapter(){
-        return adapter;
-    }
-
-    public static List<User> getList(){
-        return list;
-    }
 }

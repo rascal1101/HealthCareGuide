@@ -16,7 +16,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.androidtown.healthcareguide.Fragment.CareMeFragment;
 import org.androidtown.healthcareguide.Model.User;
 import org.androidtown.healthcareguide.R;
 
@@ -77,13 +76,7 @@ public class AddCaringMeDialog extends Dialog {
                                 cmu.setEmail(email);
                                 cmu.setName(name);
                                 cmgroupRef.setValue(cmu);
-                                for(int i=0;i<list.size();i++){
-                                    if(list.get(i).getEmail().equals(email)){
-                                        list.remove(i);
-                                    }
-                                }
-                                list.add(cmu);
-                                CareMeFragment.getCareMeListView().setAdapter(CareMeFragment.getCareMeListAdapter());
+
                                 DatabaseReference cpgroupRef = databaseReference.child(uid2).child("cpgroup").child(uid);
                                 User user1 = new User();
                                 user1.setName(currentUser.getName());

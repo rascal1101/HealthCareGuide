@@ -24,18 +24,14 @@ import java.util.List;
 
 public class CaredPeopleFragment extends Fragment {
 
-    private static ListView caredPeopleListView;
-    private static List<User> list;
-    private static CarePeopleListAdapter adapter;
-    private String uid;
-    private String email;
-    private String name;
+    private ListView caredPeopleListView;
+    private List<User> list;
+    private CarePeopleListAdapter adapter;
     private User currentUser;
 
     public CaredPeopleFragment() {
         // Required empty public constructor
     }
-
 
 
     @Override
@@ -47,39 +43,38 @@ public class CaredPeopleFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_caredpeople, container, false);
 
-        caredPeopleListView = view.findViewById(R.id.cared_people_list);
-        uid = ((CarelistActivity)getActivity()).uid;
-
-        getCurrentUser();
+        setCurrentUser();
+        initView(view);
         initAdapter();
         getListFromFirebase();
 
 
-        Toast.makeText(getContext(), "uid : " + uid, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "uid : " + currentUser.getUid(), Toast.LENGTH_SHORT).show();
         return view;
     }
 
-    public void getCurrentUser(){
+    public void setCurrentUser(){
         currentUser = new User();
-        uid = ((CarelistActivity)getActivity()).uid;
-        email = ((CarelistActivity)getActivity()).email;
-        name =  ((CarelistActivity)getActivity()).name;
         currentUser = ((CarelistActivity)getActivity()).currentUser;
+    }
+
+    public void initView(View view){
+        caredPeopleListView = view.findViewById(R.id.cared_people_list);
     }
 
     public void initAdapter(){
         list = new ArrayList<>();
-        adapter = new CarePeopleListAdapter(getContext());
+        adapter = new CarePeopleListAdapter(getContext(),list);
         caredPeopleListView.setAdapter(adapter);
     }
 
     public void getListFromFirebase(){
         DatabaseReference dr = FirebaseDatabase.getInstance().getReference();
-        dr.child("users").child(uid).child("cpgroup").addListenerForSingleValueEvent(new ValueEventListener() {
+        dr.child("users").child(currentUser.getUid()).child("cpgroup").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                list.clear();
                 for(DataSnapshot ds : dataSnapshot.getChildren()){
-                    //Toast.makeText(getContext(),"cpgroup email : " + ds.child("email").getValue(String.class) , Toast.LENGTH_SHORT).show();
                     String email = ds.child("email").getValue(String.class);
                     String name = ds.child("name").getValue(String.class);
                     String uid = ds.getKey();
@@ -88,8 +83,8 @@ public class CaredPeopleFragment extends Fragment {
                     user.setName(name);
                     user.setUid(uid);
                     list.add(user);
-                    caredPeopleListView.setAdapter(adapter);
                 }
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -98,10 +93,4 @@ public class CaredPeopleFragment extends Fragment {
             }
         });
     }
-
-
-    public static List<User> getList() {
-        return list;
-    }
-
 }
