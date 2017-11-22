@@ -24,7 +24,8 @@ public class CarelistActivity extends AppCompatActivity {
     public String uid;
     public String email;
     public String name;
-    public User currentUser;
+    public static User currentUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -54,7 +54,6 @@ public class CaredPeopleFragment extends Fragment {
     }
 
     public void setCurrentUser(){
-        currentUser = new User();
         currentUser = ((CarelistActivity)getActivity()).currentUser;
     }
 
@@ -64,7 +63,7 @@ public class CaredPeopleFragment extends Fragment {
 
     public void initAdapter(){
         list = new ArrayList<>();
-        adapter = new CarePeopleListAdapter(getContext(),list);
+        adapter = new CarePeopleListAdapter(getContext(),list, currentUser);
         caredPeopleListView.setAdapter(adapter);
     }
 

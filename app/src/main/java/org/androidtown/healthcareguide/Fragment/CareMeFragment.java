@@ -72,13 +72,12 @@ public class CareMeFragment extends Fragment {
     }
 
     public void setCurrentUser(){
-        currentUser = new User();
         currentUser = ((CarelistActivity)getActivity()).currentUser;
     }
 
     public void initAdapter(){
         list = new ArrayList<>();
-        adapter = new CareMeListAdapter(getContext(),list);
+        adapter = new CareMeListAdapter(getContext(),list,currentUser);
         careMeListView.setAdapter(adapter);
     }
 

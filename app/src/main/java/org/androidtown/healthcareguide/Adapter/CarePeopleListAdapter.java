@@ -22,10 +22,12 @@ public class CarePeopleListAdapter extends BaseAdapter {
     Context context;
     List<User> list;
     LayoutInflater inflater;
+    User currentUser;
 
-    public CarePeopleListAdapter(Context context, List<User> list) {
+    public CarePeopleListAdapter(Context context, List<User> list, User currentUser) {
         this.context = context;
         this.list = list;
+        this.currentUser = currentUser;
         inflater = (LayoutInflater)context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
     }
 

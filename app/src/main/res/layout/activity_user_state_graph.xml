@@ -12,6 +12,10 @@
         android:layout_marginTop="16dp"
         android:text="이름"/>
 
-    
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/graph"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
+
 
 </LinearLayout>

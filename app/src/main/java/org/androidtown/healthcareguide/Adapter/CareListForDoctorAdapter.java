@@ -1,6 +1,7 @@
 package org.androidtown.healthcareguide.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.androidtown.healthcareguide.Activity.UserStateGraphActivity;
 import org.androidtown.healthcareguide.Model.User;
 import org.androidtown.healthcareguide.R;
 
@@ -22,10 +24,12 @@ public class CareListForDoctorAdapter extends BaseAdapter {
     Context context;
     List<User> list;
     LayoutInflater inflater;
+    User currentUser;
 
-    public CareListForDoctorAdapter(Context context, List<User> list) {
+    public CareListForDoctorAdapter(Context context, List<User> list, User currentUser) {
         this.context = context;
         this.list = list;
+        this.currentUser = currentUser;
         inflater = (LayoutInflater)context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -80,5 +84,7 @@ public class CareListForDoctorAdapter extends BaseAdapter {
         User selectedUser = list.get(position);
         Toast.makeText(context, selectedUser.getEmail(), Toast.LENGTH_SHORT).show();
         //intent 전환
+        Intent intent = new Intent(context, UserStateGraphActivity.class);
+        context.startActivity(intent);
     }
 }

@@ -20,7 +20,7 @@ import java.util.List;
 
 public class CarelistForDoctorActivity extends AppCompatActivity {
 
-    private User currentUser;
+    public static User currentUser;
     private ListView listView;
     private List<User> list;
     private CareListForDoctorAdapter adapter;
@@ -65,7 +65,7 @@ public class CarelistForDoctorActivity extends AppCompatActivity {
 
     public void initAdapter(){
         list = new ArrayList<>();
-        adapter = new CareListForDoctorAdapter(getApplicationContext(),list);
+        adapter = new CareListForDoctorAdapter(getApplicationContext(),list, currentUser);
         listView.setAdapter(adapter);
     }
 
