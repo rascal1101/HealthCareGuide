@@ -85,6 +85,9 @@ public class CareListForDoctorAdapter extends BaseAdapter {
         Toast.makeText(context, selectedUser.getEmail(), Toast.LENGTH_SHORT).show();
         //intent 전환
         Intent intent = new Intent(context, UserStateGraphActivity.class);
+        intent.putExtra("caredUserName",selectedUser.getName());
+        intent.putExtra("caredUserEmail",selectedUser.getEmail());
+        intent.putExtra("caredUserUid",selectedUser.getUid());
         context.startActivity(intent);
     }
 }

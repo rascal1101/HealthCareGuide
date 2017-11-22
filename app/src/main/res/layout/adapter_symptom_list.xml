@@ -5,18 +5,17 @@
     android:id="@+id/care_people_layout">
 
 
-    <TextView
-        android:id="@+id/care_people_name"
+    <ImageView
+        android:id="@+id/symptom_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="1234"
         />
 
     <TextView
-        android:id="@+id/care_people_email"
+        android:id="@+id/symptom_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/care_people_name"
+        android:layout_below="@+id/symptom_image"
         android:text="1234"/>
 
 
