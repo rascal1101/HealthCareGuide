@@ -1,6 +1,7 @@
 package org.androidtown.healthcareguide.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.androidtown.healthcareguide.Activity.Select_Activity;
 import org.androidtown.healthcareguide.Model.User;
 import org.androidtown.healthcareguide.R;
 
@@ -82,5 +84,10 @@ public class CarePeopleListAdapter extends BaseAdapter {
         User selectedUser = list.get(position);
         Toast.makeText(context, selectedUser.getEmail(), Toast.LENGTH_SHORT).show();
         //intent 전환
+        Intent intent = new Intent(context, Select_Activity.class);
+        intent.putExtra("name",selectedUser.getName());
+        intent.putExtra("email",selectedUser.getEmail());
+        intent.putExtra("uid",selectedUser.getUid());
+        context.startActivity(intent);
     }
 }

@@ -21,6 +21,8 @@
         <activity android:name=".Activity.CarelistForDoctorActivity" />
         <activity android:name=".Activity.CarelistActivity" />
         <activity android:name=".Activity.UserStateGraphActivity"></activity>
+        <activity android:name=".Activity.Diabets_Activity"></activity>
+        <activity android:name=".Activity.Select_Activity"></activity>
     </application>
 
 </manifest>
