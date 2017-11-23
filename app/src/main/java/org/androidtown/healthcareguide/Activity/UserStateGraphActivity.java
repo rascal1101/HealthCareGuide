@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -118,7 +119,11 @@ public class UserStateGraphActivity extends AppCompatActivity {
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getImageFromGallery();
+                //getImageFromGallery();
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(UserStateGraphActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
 

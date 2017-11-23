@@ -1,6 +1,9 @@
 package org.androidtown.healthcareguide.Activity;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,7 +21,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -32,7 +34,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private Button loginButton;
     private Button signupButton;
-    private DatabaseReference databaseReference;
     private FirebaseDatabase database;
     private EditText emailEditText;
     private EditText passwordEditText;
@@ -40,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private String uid;
     private String email;
+    private ProgressDialog progressDialog;
 
 
     @Override
@@ -58,6 +60,17 @@ public class LoginActivity extends AppCompatActivity {
         emailEditText = findViewById(R.id.login_email_edit_text);
         passwordEditText = findViewById(R.id.login_password_edit_text);
 
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setMessage("처리중입니다");
+        progressDialog.setCanceledOnTouchOutside(false);
+
+        SharedPreferences auto = getSharedPreferences("auto_login", Context.MODE_PRIVATE);
+
+        emailEditText.setText(auto.getString("email",null));
+        passwordEditText.setText(auto.getString("password",null));
+
         database = FirebaseDatabase.getInstance();
 
 
@@ -65,23 +78,11 @@ public class LoginActivity extends AppCompatActivity {
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                if(firebaseUser !=null) {
-                    uid = firebaseUser.getUid();
-                    email = firebaseUser.getEmail();
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if(user !=null) {
+                    uid = user.getUid();
+                    email = user.getEmail();
                 }
-/*
-                if(firebaseUser !=null){ //유저가 있는 경우
-                    Intent intent = new Intent(LoginActivity.this, CarelistActivity.class);
-                    intent.putExtra("uid", firebaseUser.getUid());
-                    intent.putExtra("email", firebaseUser.getEmail());
-                    startActivity(intent);
-                    finish();
-                }else{
-
-                }
-                */
-
             }
         };
 
@@ -92,44 +93,53 @@ public class LoginActivity extends AppCompatActivity {
 
             public void onClick(View view) {
                final String email = emailEditText.getText().toString();
-               String password = passwordEditText.getText().toString();
+               final String password = passwordEditText.getText().toString();
 
+               progressDialog.show();
 
                mAuth.signInWithEmailAndPassword(email,password)
                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                            @Override public void onComplete(@NonNull Task<AuthResult> task) {
                                if(task.isSuccessful()){
                                    Log.d("rascal","Sign In Success");
+                                   SharedPreferences sharedPreferences =
+                                           LoginActivity.this.getSharedPreferences("auto_login", Context.MODE_PRIVATE);
+                                   SharedPreferences.Editor editor = sharedPreferences.edit();
+                                   editor.putString("email",email);
+                                   editor.putString("password",password);
+
+                                   editor.commit();
+
+
+
                                    database.getReference().child("users").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
                                        @Override
                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                           progressDialog.dismiss();
                                            String name = dataSnapshot.child("name").getValue(String.class);
                                            String mode = dataSnapshot.child("mode").getValue(String.class);
+                                           Intent intent;
                                            if(mode.equals("normal")){
-                                               Intent intent = new Intent(LoginActivity.this, CarelistActivity.class);
-                                               intent.putExtra("uid", uid);
-                                               intent.putExtra("email", email);
-                                               intent.putExtra("name",name);
-                                               startActivity(intent);
-                                               finish();
+                                               intent = new Intent(LoginActivity.this, CarelistActivity.class);
                                            }else{
-                                               Intent intent = new Intent(LoginActivity.this, CarelistForDoctorActivity.class);
-                                               intent.putExtra("uid", uid);
-                                               intent.putExtra("email", email);
-                                               intent.putExtra("name",name);
-                                               startActivity(intent);
-                                               finish();
+                                               intent = new Intent(LoginActivity.this, CarelistForDoctorActivity.class);
                                            }
+                                           intent.putExtra("uid", uid);
+                                           intent.putExtra("email", email);
+                                           intent.putExtra("name",name);
+                                           startActivity(intent);
+                                           finish();
                                        }
 
                                        @Override
                                        public void onCancelled(DatabaseError databaseError) {
-
+                                           progressDialog.dismiss();
                                        }
                                    });
 
                                } else {
                                    Log.d("rascal","Sign In Fail");
+                                   progressDialog.dismiss();
                                    Toast.makeText(LoginActivity.this, "Sign In Fail", Toast.LENGTH_SHORT).show();
                                }
                            }

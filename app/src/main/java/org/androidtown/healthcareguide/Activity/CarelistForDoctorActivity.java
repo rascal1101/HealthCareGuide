@@ -3,8 +3,11 @@ package org.androidtown.healthcareguide.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,6 +27,7 @@ public class CarelistForDoctorActivity extends AppCompatActivity {
     private ListView listView;
     private List<User> list;
     private CareListForDoctorAdapter adapter;
+    private Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +75,17 @@ public class CarelistForDoctorActivity extends AppCompatActivity {
 
     public void initView(){
         listView = findViewById(R.id.d_cared_people_list);
+        button = findViewById(R.id.sign_out);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(CarelistForDoctorActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     public void setCurrentUser(){
