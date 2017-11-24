@@ -7,21 +7,31 @@ import com.google.firebase.database.ServerValue;
  */
 
 public class Symptom {
-    private String uid;
+
     private String content;
     private String imageUrl;
     private Object timestamp;
+    private String key;
+    private String imageName;
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
 
     public Symptom(){
         timestamp = ServerValue.TIMESTAMP;
-    }
-
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
     }
 
     public Object getTimestamp() {

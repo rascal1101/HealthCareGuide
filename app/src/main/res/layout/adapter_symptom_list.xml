@@ -2,21 +2,28 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/care_people_layout">
+    android:id="@+id/symptom_layout">
 
 
     <ImageView
         android:id="@+id/symptom_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         />
 
     <TextView
         android:id="@+id/symptom_content"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/symptom_image"
-        android:text="1234"/>
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="1234"
+        android:background="@drawable/symptom_rounded"
+        android:visibility="gone"/>
 
 
 </RelativeLayout>

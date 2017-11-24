@@ -17,13 +17,14 @@ import org.androidtown.healthcareguide.R;
 public class Select_Activity extends AppCompatActivity {
 
     public static User caredUser;
+    public static User currentUser;
     private TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select_activity);
-        findViewById(R.id.bt_diabetes).setOnClickListener(ocn);
+
         setUser();
         initView();
     }
@@ -34,21 +35,45 @@ public class Select_Activity extends AppCompatActivity {
         caredUser.setEmail(intent.getStringExtra("email"));
         caredUser.setName(intent.getStringExtra("name"));
         caredUser.setUid(intent.getStringExtra("uid"));
+        currentUser = CarelistActivity.currentUser;
     }
 
     public void initView(){
         textView = findViewById(R.id.note_name);
         textView.setText(caredUser.getName());
+
+        findViewById(R.id.bt_diabetes).setOnClickListener(ocn);
+        findViewById(R.id.bt_graph).setOnClickListener(ocn);
+        findViewById(R.id.bt_blood).setOnClickListener(ocn);
+        findViewById(R.id.bt_symptom).setOnClickListener(ocn);
+
+
+
     }
 
-    Button.OnClickListener ocn= new Button.OnClickListener() {
+    Button.OnClickListener ocn = new Button.OnClickListener() {
         @Override
         public void onClick(View view) {
             switch(view.getId()){
                 case R.id.bt_diabetes:
-                    Intent intent = new Intent(Select_Activity.this,Diabets_Activity.class);
-                    startActivity(intent);
+                    Intent intent1 = new Intent(Select_Activity.this,Diabets_Activity.class);
+                    startActivity(intent1);
                     break;
+
+                case R.id.bt_blood:
+
+                    break;
+
+                case R.id.bt_symptom:
+                    Intent intent3 = new Intent(Select_Activity.this, SymptomActivity.class);
+                    startActivity(intent3);
+                    break;
+
+                case R.id.bt_graph:
+                    Intent intent4 = new Intent(Select_Activity.this, UserStateGraphActivity.class);
+                    startActivity(intent4);
+                    break;
+
 
             }
         }

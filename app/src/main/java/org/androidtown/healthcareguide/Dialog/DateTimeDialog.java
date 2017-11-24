@@ -35,12 +35,12 @@ public class DateTimeDialog extends Dialog{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.datetime_dialog);
 
-        timePicker=(TimePicker)findViewById(R.id.timePicker);
-        datePicker=(DatePicker)findViewById(R.id.datePicker);
+        timePicker = findViewById(R.id.timePicker);
+        datePicker = findViewById(R.id.datePicker);
       //  editText=(EditText)findViewById(R.id.et_date);
 
 
-        Calendar calendar=Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, datePicker.getYear());
         calendar.set(Calendar.MONTH, datePicker.getMonth());
         calendar.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
@@ -54,7 +54,7 @@ public class DateTimeDialog extends Dialog{
             @Override
             public void onClick(View view) {
               
-                String str=datePicker.getYear()+"-"+datePicker.getMonth()+"-"+datePicker.getDayOfMonth()+" "+timePicker.getCurrentHour()+":"+timePicker.getCurrentMinute();
+                String str = datePicker.getYear()+"-"+datePicker.getMonth()+"-"+datePicker.getDayOfMonth()+" "+timePicker.getCurrentHour()+":"+timePicker.getCurrentMinute();
 
                 tv_date.setText(str);
                 dismiss();

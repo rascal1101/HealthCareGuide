@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.androidtown.healthcareguide">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -20,9 +21,11 @@
         <activity android:name=".Activity.SignupActivity" />
         <activity android:name=".Activity.CarelistForDoctorActivity" />
         <activity android:name=".Activity.CarelistActivity" />
-        <activity android:name=".Activity.UserStateGraphActivity"></activity>
-        <activity android:name=".Activity.Diabets_Activity"></activity>
-        <activity android:name=".Activity.Select_Activity"></activity>
+        <activity android:name=".Activity.UserStateGraphActivity" />
+        <activity android:name=".Activity.Diabets_Activity" />
+        <activity android:name=".Activity.Select_Activity" />
+        <activity android:name=".Activity.SymptomActivity"
+            android:windowSoftInputMode="adjustResize"/>
     </application>
 
 </manifest>
