@@ -36,9 +36,16 @@ public class InputdiabetsFragment extends Fragment {
     private RadioButton rb_after;
     private RadioButton rb_eat;
     private User caredUser;
+    public static String date;
+    public static String time;
 
-    private ResultdiabetsFragment resultdiabetsFragment;
+    public static void setD(String d){
+        date = d;
+    }
 
+    public static void setT(String t){
+        time = t;
+    }
     public InputdiabetsFragment(){}
 
     @Override
@@ -82,8 +89,6 @@ public class InputdiabetsFragment extends Fragment {
         bt_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                String datetime =tv_date.getText().toString();
                 String diabetesinfo =et_diabets.getText().toString();
                 String eat;
                 if(rb_before.isChecked()){
@@ -94,7 +99,8 @@ public class InputdiabetsFragment extends Fragment {
                 //리스트에 들어갈 날짜와시간,식전식후여부,혈당을 저장버튼을 누를시 데이터베이스에 넣고싶어요..ㅠㅠ
 
                 DiabetesInformation di = new DiabetesInformation();
-                di.setDatetime(datetime);
+                di.setDate(date);
+                di.setTime(time);
                 di.setDiabetesinfo(diabetesinfo);
                 di.setEat(eat);
 

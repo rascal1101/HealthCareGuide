@@ -53,7 +53,8 @@ public class DiabetesAdapter extends BaseAdapter {
 
         DiabetesInformation diabetesInformation = list.get(position);
 
-        String datetime = diabetesInformation.getDatetime();
+        String date = diabetesInformation.getDate();
+        String time = diabetesInformation.getTime();
         String eat = diabetesInformation.getEat();
         String diabetesinfo = diabetesInformation.getDiabetesinfo();
 
@@ -61,7 +62,7 @@ public class DiabetesAdapter extends BaseAdapter {
         TextView itemEat = view.findViewById(R.id.item_eat);
         TextView itemDiabetesinfo = view.findViewById(R.id.item_diabetesinfo);
 
-        itemDateTime.setText(datetime);
+        itemDateTime.setText(date + " " + time);
         itemEat.setText(eat);
         itemDiabetesinfo.setText(diabetesinfo);
 

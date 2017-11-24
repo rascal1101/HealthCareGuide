@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import org.androidtown.healthcareguide.Fragment.InputdiabetsFragment;
 import org.androidtown.healthcareguide.R;
 
 import java.util.Calendar;
@@ -25,6 +26,8 @@ public class DateTimeDialog extends Dialog{
     TimePicker timePicker;
     DatePicker datePicker;
     TextView tv_date;
+    String date;
+    String time;
     public DateTimeDialog(@NonNull Context context, TextView tv_date) {
         super(context);
         this.tv_date = tv_date;
@@ -54,8 +57,13 @@ public class DateTimeDialog extends Dialog{
             @Override
             public void onClick(View view) {
               
-                String str = datePicker.getYear()+"-"+datePicker.getMonth()+"-"+datePicker.getDayOfMonth()+" "+timePicker.getCurrentHour()+":"+timePicker.getCurrentMinute();
+                String str = datePicker.getYear()+"-"+(datePicker.getMonth()+1)+"-"+datePicker.getDayOfMonth()+" "+timePicker.getCurrentHour()+":"+timePicker.getCurrentMinute();
 
+                date = datePicker.getYear()+"-"+(datePicker.getMonth()+1)+"-"+datePicker.getDayOfMonth();
+                time = timePicker.getCurrentHour()+":"+timePicker.getCurrentMinute();
+
+                InputdiabetsFragment.setD(date);
+                InputdiabetsFragment.setT(time);
                 tv_date.setText(str);
                 dismiss();
             }

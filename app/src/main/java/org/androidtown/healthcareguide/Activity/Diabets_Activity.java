@@ -1,6 +1,5 @@
 package org.androidtown.healthcareguide.Activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -10,7 +9,6 @@ import android.widget.FrameLayout;
 
 import org.androidtown.healthcareguide.Fragment.InputdiabetsFragment;
 import org.androidtown.healthcareguide.Fragment.ResultdiabetsFragment;
-import org.androidtown.healthcareguide.Model.DiabetesInformation;
 import org.androidtown.healthcareguide.Model.User;
 import org.androidtown.healthcareguide.R;
 
@@ -26,10 +24,6 @@ public class Diabets_Activity extends AppCompatActivity {
     private FrameLayout container;
     private Button inputbutton;
     private Button outputbutton;
-    DiabetesInformation currentDiabetesInformation;
-    private String datetime;
-    private String eat;
-    private String diabetesinfo;
     public static User caredUser;
 
 @Override
@@ -45,17 +39,6 @@ public class Diabets_Activity extends AppCompatActivity {
     }
 
 
-    public void setCurrentDiabetesInformation(){
-        Intent intent = getIntent();
-        datetime = intent.getStringExtra("datetime");
-        eat = intent.getStringExtra("eat");
-        diabetesinfo = intent.getStringExtra("diabetesinfo");
-
-        currentDiabetesInformation = new DiabetesInformation();
-        currentDiabetesInformation.setDatetime(datetime);
-        currentDiabetesInformation.setEat(eat);
-        currentDiabetesInformation.setDiabetesinfo(diabetesinfo);
-    }
 
     public void initView(Bundle savedInstanceState)
     {

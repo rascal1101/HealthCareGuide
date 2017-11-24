@@ -69,7 +69,6 @@ public class ResultdiabetsFragment extends Fragment {
     public void initAdapter(){
         list = new ArrayList<>();
         adapter = new DiabetesAdapter(getContext(),list);
-        DiabetesInformation diabetesInformation = new DiabetesInformation();
         diabets_list.setAdapter(adapter);
     }
 
