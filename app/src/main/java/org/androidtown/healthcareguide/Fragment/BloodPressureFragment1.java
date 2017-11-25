@@ -8,8 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,9 +31,6 @@ public class BloodPressureFragment1 extends Fragment {
     private TextView tv_dates;
     private EditText et_high;
     private EditText et_low;
-    private RadioGroup rg_eats;
-    private RadioButton rb_eatbefore;
-    private RadioButton rb_eatafter;
     private Button bt_saves;
     public static String date;
     public static String time;
@@ -70,10 +65,6 @@ public class BloodPressureFragment1 extends Fragment {
         et_high=view.findViewById(R.id.et_high);
         et_low=view.findViewById(R.id.et_low);
         bt_saves=view.findViewById(R.id.bt_saves);
-        rg_eats=view.findViewById(R.id.rg_eats);
-        rb_eatbefore=view.findViewById(R.id.rb_eatbefore);
-        rb_eatafter=view.findViewById(R.id.rb_eatafter);
-
         bt_dates.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,19 +77,12 @@ public class BloodPressureFragment1 extends Fragment {
             public void onClick(View view) {
                 String bloodHigh =et_high.getText().toString();
                 String bloodLow =et_low.getText().toString();
-                String eats;
-                if(rb_eatbefore.isChecked()){
-                    eats = rb_eatbefore.getText().toString();
-                }else{
-                    eats = rb_eatafter.getText().toString();
-                }
 
                 BloodPressureInformation bi = new BloodPressureInformation();
                 bi.setDate(date);
                 bi.setTime(time);
                 bi.setBloodHigh(bloodHigh);
                 bi.setBloodLow(bloodLow);
-                bi.setEat(eats);
 
                 FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
                 DatabaseReference dr = firebaseDatabase.getReference().child("blood_pressure").child(caredUser.getUid()).push();

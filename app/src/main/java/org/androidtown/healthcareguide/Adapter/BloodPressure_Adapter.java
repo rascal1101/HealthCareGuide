@@ -65,18 +65,15 @@ public class BloodPressure_Adapter extends BaseAdapter {
 
         String date = bloodPressureInformation.getDate();
         String time = bloodPressureInformation.getTime();
-        String eats = bloodPressureInformation.getEat();
         String bloodhigh = bloodPressureInformation.getBloodHigh();
         String bloodlow=bloodPressureInformation.getBloodLow();
         final String key = bloodPressureInformation.getKey();
 
         TextView itemDateTime2 = view.findViewById(R.id.item_datetime2);
-        TextView itemEat2 = view.findViewById(R.id.item_eat2);
         TextView itemBloodhigh = view.findViewById(R.id.item_high);
         TextView itemBloodlow = view.findViewById(R.id.item_low);
 
         itemDateTime2.setText(date + " " + time);
-        itemEat2.setText(eats);
         itemBloodhigh.setText(bloodhigh+"/");
         itemBloodlow.setText(bloodlow);
 

@@ -140,7 +140,7 @@ public class LoginActivity extends AppCompatActivity {
                                } else {
                                    Log.d("rascal","Sign In Fail");
                                    progressDialog.dismiss();
-                                   Toast.makeText(LoginActivity.this, "Sign In Fail", Toast.LENGTH_SHORT).show();
+                                   Toast.makeText(LoginActivity.this, "로그인 실패", Toast.LENGTH_SHORT).show();
                                }
                            }
                        } );

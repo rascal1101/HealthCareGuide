@@ -8,11 +8,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
+import com.jjoe64.graphview.series.PointsGraphSeries;
 
+import org.androidtown.healthcareguide.Model.BloodPressureInformation;
 import org.androidtown.healthcareguide.Model.DiabetesInformation;
 import org.androidtown.healthcareguide.Model.User;
 import org.androidtown.healthcareguide.R;
@@ -25,13 +27,19 @@ import java.util.List;
 public class UserStateGraphActivity extends AppCompatActivity {
 
 
-    private GraphView graph;
+    private GraphView beforeDiabetesGraph;
+    private GraphView afterDiabetesGraph;
+    private GraphView bloodPressureGraph;
     public User currentUser;
-    private SimpleDateFormat sdf;
     private User caredUser;
     private TextView textView;
-    private List<DiabetesInformation> list;
-    private LineGraphSeries<DataPoint> diabetesSeries;
+    private List<DiabetesInformation> beforeDiabetesList;
+    private List<DiabetesInformation> afterDiabetesList;
+    private List<BloodPressureInformation> bloodPressureList;
+    private LineGraphSeries<DataPoint> beforeDiabetesSeries;
+    private LineGraphSeries<DataPoint> afterDiabetesSeries;
+    private PointsGraphSeries<DataPoint> highBloodPressureSeries;
+    private PointsGraphSeries<DataPoint> lowBloodPressureSeries;
 
 
     @Override
@@ -41,41 +49,179 @@ public class UserStateGraphActivity extends AppCompatActivity {
 
         setUsers();
         initView();
-        getListFromFirebase();
+        setGraphView();
+        getDiabetesListFromFirebase();
+        getBPListFromFirebase();
     }
 
-    public void getListFromFirebase(){
+    public void getBPListFromFirebase(){
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        firebaseDatabase.getReference().child("diabetes").child(caredUser.getUid()).addValueEventListener(new ValueEventListener() {
+        firebaseDatabase.getReference().child("blood_pressure").child(caredUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                list.clear();
+                bloodPressureList.clear();
                 for(DataSnapshot ds : dataSnapshot.getChildren()){
-                    list.add(ds.getValue(DiabetesInformation.class));
+                    BloodPressureInformation bpi =ds.getValue(BloodPressureInformation.class);
+                    bloodPressureList.add(bpi);
                 }
-                DataPoint[] dataPoints = new DataPoint[list.size()];
+                DataPoint[] dataPointsHigh = new DataPoint[bloodPressureList.size()];
+                DataPoint[] dataPointsLow = new DataPoint[bloodPressureList.size()];
+
+
+                Date minDate = new Date();
+                Date maxDate = new Date();
 
                 int i=0;
-                for(DiabetesInformation info : list){
+                for(BloodPressureInformation info : bloodPressureList){
                     String date = info.getDate();
                     int year = Integer.parseInt(date.substring(0,4));
-                    int month=12;
+                    int month=11;
                     int day=31;
 
                     for(int j=5;j<date.length();j++){
                         if(date.charAt(j)=='-'){
-                            month = Integer.parseInt(date.substring(5,j));
+                            month = Integer.parseInt(date.substring(5,j)) -1;
                             day = Integer.parseInt(date.substring(j+1,date.length()));
+                            break;
                         }
                     }
 
                     Date d = new Date(year,month,day);
-                    dataPoints[i] = new DataPoint(d,Integer.parseInt(info.getDiabetesinfo()));
+                    if(i==0){
+                        minDate = d;
+                        maxDate = d;
+                    }else{
+                        if(d.getTime() < minDate.getTime()){
+                            minDate = d;
+                        }
+                        if(d.getTime() > maxDate.getTime()){
+                            maxDate = d;
+                        }
+                    }
+                    dataPointsHigh[i] = new DataPoint(d,Integer.parseInt(info.getBloodHigh()));
+                    dataPointsLow[i] = new DataPoint(d,Integer.parseInt(info.getBloodLow()));
                     i++;
                 }
 
-                diabetesSeries = new LineGraphSeries<>(dataPoints);
-                graph.addSeries(diabetesSeries);
+                bloodPressureGraph.getViewport().setMinX(minDate.getTime());
+                bloodPressureGraph.getViewport().setMaxX(maxDate.getTime());
+                bloodPressureGraph.getViewport().setXAxisBoundsManual(true);
+
+
+                highBloodPressureSeries = new PointsGraphSeries<>(dataPointsHigh);
+                lowBloodPressureSeries = new PointsGraphSeries<>(dataPointsLow);
+
+                bloodPressureGraph.addSeries(highBloodPressureSeries);
+                bloodPressureGraph.addSeries(lowBloodPressureSeries);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void getDiabetesListFromFirebase(){
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseDatabase.getReference().child("diabetes").child(caredUser.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                beforeDiabetesList.clear();
+                afterDiabetesList.clear();
+                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                    DiabetesInformation di =ds.getValue(DiabetesInformation.class);
+                    if(di.getEat().equals("식전")){
+                        beforeDiabetesList.add(di);
+                    }else{
+                        afterDiabetesList.add(di);
+                    }
+                }
+                DataPoint[] dataPointsBefore = new DataPoint[beforeDiabetesList.size()];
+                DataPoint[] dataPointsAfter = new DataPoint[afterDiabetesList.size()];
+
+                Date minDate = new Date();
+                Date maxDate = new Date();
+
+
+                int i=0;
+                for(DiabetesInformation info : beforeDiabetesList){
+                    String date = info.getDate();
+                    int year = Integer.parseInt(date.substring(0,4));
+                    int month=11;
+                    int day=31;
+
+                    for(int j=5;j<date.length();j++){
+                        if(date.charAt(j)=='-'){
+                            month = Integer.parseInt(date.substring(5,j)) -1;
+                            day = Integer.parseInt(date.substring(j+1,date.length()));
+                            break;
+                        }
+                    }
+
+                    Date d = new Date(year,month,day);
+                    if(i==0){
+                        minDate = d;
+                        maxDate = d;
+                    }else{
+                        if(d.getTime() < minDate.getTime()){
+                            minDate = d;
+                        }
+                        if(d.getTime() > maxDate.getTime()){
+                            maxDate = d;
+                        }
+                    }
+                    dataPointsBefore[i] = new DataPoint(d,Integer.parseInt(info.getDiabetesinfo()));
+                    i++;
+                }
+
+                beforeDiabetesGraph.getViewport().setMinX(minDate.getTime());
+                beforeDiabetesGraph.getViewport().setMinX(maxDate.getTime());
+                beforeDiabetesGraph.getViewport().setXAxisBoundsManual(true);
+
+
+                i=0;
+                for(DiabetesInformation info : afterDiabetesList){
+                    String date = info.getDate();
+                    int year = Integer.parseInt(date.substring(0,4));
+                    int month=11;
+                    int day=31;
+
+
+                    for(int j=5;j<date.length();j++){
+                        if(date.charAt(j)=='-'){
+                            month = Integer.parseInt(date.substring(5,j)) -1;
+                            day = Integer.parseInt(date.substring(j+1,date.length()));
+                            break;
+                        }
+                    }
+
+                    Date d = new Date(year,month,day);
+                    if(i==0){
+                        minDate = d;
+                        maxDate = d;
+                    }else{
+                        if(d.getTime() < minDate.getTime()){
+                            minDate = d;
+                        }
+                        if(d.getTime() > maxDate.getTime()){
+                            maxDate = d;
+                        }
+                    }
+                    dataPointsAfter[i] = new DataPoint(d,Integer.parseInt(info.getDiabetesinfo()));
+                    i++;
+                }
+
+                afterDiabetesGraph.getViewport().setMinX(minDate.getTime());
+                afterDiabetesGraph.getViewport().setMinX(maxDate.getTime());
+                afterDiabetesGraph.getViewport().setXAxisBoundsManual(true);
+
+                beforeDiabetesSeries = new LineGraphSeries<>(dataPointsBefore);
+                afterDiabetesSeries = new LineGraphSeries<>(dataPointsAfter);
+
+
+                beforeDiabetesGraph.addSeries(beforeDiabetesSeries);
+                afterDiabetesGraph.addSeries(afterDiabetesSeries);
             }
 
             @Override
@@ -90,31 +236,41 @@ public class UserStateGraphActivity extends AppCompatActivity {
         currentUser = Select_Activity.currentUser;
     }
 
-    public void initView(){
-        graph = findViewById(R.id.graph);
-        textView = findViewById(R.id.cared_user_name);
-        textView.setText(caredUser.getName());
-        list = new ArrayList<>();
+    public void setGraphView(){
+        beforeDiabetesGraph.getGridLabelRenderer().setLabelFormatter(
+                new DateAsXAxisLabelFormatter(UserStateGraphActivity.this, new SimpleDateFormat("MM/dd")));
+        afterDiabetesGraph.getGridLabelRenderer().setLabelFormatter(
+                new DateAsXAxisLabelFormatter(UserStateGraphActivity.this, new SimpleDateFormat("MM/dd")));
+
+        beforeDiabetesGraph.getViewport().setMinY(0);
+        beforeDiabetesGraph.getViewport().setMaxY(400);
+        beforeDiabetesGraph.getViewport().setYAxisBoundsManual(true);
+        beforeDiabetesGraph.getGridLabelRenderer().setHumanRounding(false);
+
+        afterDiabetesGraph.getViewport().setMinY(0);
+        afterDiabetesGraph.getViewport().setMaxY(400);
+        afterDiabetesGraph.getViewport().setYAxisBoundsManual(true);
+        afterDiabetesGraph.getGridLabelRenderer().setHumanRounding(false);
+
+        bloodPressureGraph.getGridLabelRenderer().setLabelFormatter(
+                new DateAsXAxisLabelFormatter(UserStateGraphActivity.this, new SimpleDateFormat("MM/dd")));
 
 
-        sdf = new SimpleDateFormat("MM/dd");
-        graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter(){
-            @Override
-            public String formatLabel(double value, boolean isValueX) {
-                if(isValueX){
-                    return sdf.format(new Date((long)value));
-                }else {
-                    return super.formatLabel(value, isValueX);
-                }
-            }
-        });
-        graph.getViewport().setMinY(0);
-        graph.getViewport().setMaxY(400);
-        graph.getViewport().setYAxisBoundsManual(true);
-
-
+        bloodPressureGraph.getViewport().setMinY(0);
+        bloodPressureGraph.getViewport().setMaxY(200);
+        bloodPressureGraph.getViewport().setYAxisBoundsManual(true);
+        bloodPressureGraph.getGridLabelRenderer().setHumanRounding(false);
     }
 
+    public void initView(){
+        beforeDiabetesGraph = findViewById(R.id.before_diabetes_graph);
+        afterDiabetesGraph = findViewById(R.id.after_diabetes_graph);
+        bloodPressureGraph = findViewById(R.id.blood_pressure_graph);
+        textView = findViewById(R.id.cared_user_name);
 
-
+        textView.setText(caredUser.getName() + "의 상태 그래프");
+        beforeDiabetesList = new ArrayList<>();
+        afterDiabetesList = new ArrayList<>();
+        bloodPressureList = new ArrayList<>();
+    }
 }

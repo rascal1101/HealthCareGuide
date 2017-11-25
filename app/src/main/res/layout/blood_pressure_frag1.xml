@@ -12,28 +12,6 @@
         android:layout_margin="30dp"
         android:textSize="30dp"/>
 
-    <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/rg_eats">
-        <RadioButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="식전"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:layout_margin="10dp"
-            android:id="@+id/rb_eatbefore"/>
-        <RadioButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="식후"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:layout_margin="10dp"
-            android:id="@+id/rb_eatafter"/>
-    </RadioGroup>
 
     <LinearLayout
         android:layout_width="match_parent"

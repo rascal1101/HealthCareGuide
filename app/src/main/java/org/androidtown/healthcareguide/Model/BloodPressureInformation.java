@@ -7,7 +7,6 @@ package org.androidtown.healthcareguide.Model;
 public class BloodPressureInformation {
     private String date;
     private String time;
-    private String eat;
     private String bloodHigh;
     private String bloodLow;
     private String key;
@@ -28,14 +27,6 @@ public class BloodPressureInformation {
 
     public void setTime(String time) {
         this.time = time;
-    }
-
-    public String getEat() {
-        return eat;
-    }
-
-    public void setEat(String eat) {
-        this.eat = eat;
     }
 
     public String getBloodHigh() {

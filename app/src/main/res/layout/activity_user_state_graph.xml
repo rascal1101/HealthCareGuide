@@ -13,11 +13,55 @@
         android:layout_marginTop="16dp"
         android:text="이름"/>
 
-    <com.jjoe64.graphview.GraphView
-        android:id="@+id/graph"
+
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        />
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="혈압"/>
+            <com.jjoe64.graphview.GraphView
+                android:id="@+id/blood_pressure_graph"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:layout_marginTop="20dp"
+                />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="식전 혈당"/>
+
+            <com.jjoe64.graphview.GraphView
+                android:id="@+id/before_diabetes_graph"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginTop="20dp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="식후 혈당"/>
+
+            <com.jjoe64.graphview.GraphView
+                android:id="@+id/after_diabetes_graph"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginTop="20dp"
+                />
+        </LinearLayout>
+    </ScrollView>
+
+
 
 
 </LinearLayout>

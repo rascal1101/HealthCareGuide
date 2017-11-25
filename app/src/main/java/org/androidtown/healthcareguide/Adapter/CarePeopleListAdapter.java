@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.androidtown.healthcareguide.Activity.Select_Activity;
 import org.androidtown.healthcareguide.Model.User;
@@ -82,8 +81,7 @@ public class CarePeopleListAdapter extends BaseAdapter {
 
     public void callIntent(int position){
         User selectedUser = list.get(position);
-        Toast.makeText(context, selectedUser.getEmail(), Toast.LENGTH_SHORT).show();
-        //intent 전환
+        
         Intent intent = new Intent(context, Select_Activity.class);
         intent.putExtra("name",selectedUser.getName());
         intent.putExtra("email",selectedUser.getEmail());
