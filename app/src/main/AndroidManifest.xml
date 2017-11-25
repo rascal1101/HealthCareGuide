@@ -26,6 +26,7 @@
         <activity android:name=".Activity.Select_Activity" />
         <activity android:name=".Activity.SymptomActivity"
             android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".Activity.BloodPressureActivity" />
     </application>
 
 </manifest>

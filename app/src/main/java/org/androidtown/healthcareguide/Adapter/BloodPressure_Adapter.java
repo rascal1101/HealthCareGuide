@@ -7,34 +7,36 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.androidtown.healthcareguide.Activity.Select_Activity;
-import org.androidtown.healthcareguide.Model.DiabetesInformation;
+import org.androidtown.healthcareguide.Model.BloodPressureInformation;
 import org.androidtown.healthcareguide.Model.User;
 import org.androidtown.healthcareguide.R;
 
 import java.util.List;
 
 /**
- * Created by yjhyj on 2017-11-21.
+ * Created by yjhyj on 2017-11-24.
  */
 
-public class DiabetesAdapter extends BaseAdapter {
+public class BloodPressure_Adapter extends BaseAdapter {
+
     Context context;
-    List<DiabetesInformation> list;
+    List<BloodPressureInformation> list;
     LayoutInflater inflater;
     User caredUser;
-    public DiabetesAdapter(Context context, List<DiabetesInformation> list) {
+
+
+    public BloodPressure_Adapter(Context context, List<BloodPressureInformation> list) {
         this.context = context;
         this.list = list;
         caredUser = Select_Activity.caredUser;
         inflater = (LayoutInflater)context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
     }
-
     @Override
     public int getCount() {
         return list.size();
@@ -54,28 +56,31 @@ public class DiabetesAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         View view;
         if(convertView==null){
-            view = inflater.inflate(R.layout.adapter_diabetes, parent, false);
+            view = inflater.inflate(R.layout.adapter_blood_pressure, parent, false);
         }else{
             view = convertView;
         }
 
-        DiabetesInformation diabetesInformation = list.get(position);
+        BloodPressureInformation bloodPressureInformation = list.get(position);
 
-        String date = diabetesInformation.getDate();
-        String time = diabetesInformation.getTime();
-        String eat = diabetesInformation.getEat();
-        String diabetesinfo = diabetesInformation.getDiabetesinfo();
-        final String key = diabetesInformation.getKey();
+        String date = bloodPressureInformation.getDate();
+        String time = bloodPressureInformation.getTime();
+        String eats = bloodPressureInformation.getEat();
+        String bloodhigh = bloodPressureInformation.getBloodHigh();
+        String bloodlow=bloodPressureInformation.getBloodLow();
+        final String key = bloodPressureInformation.getKey();
 
-        TextView itemDateTime = view.findViewById(R.id.item_datetime);
-        TextView itemEat = view.findViewById(R.id.item_eat);
-        TextView itemDiabetesinfo = view.findViewById(R.id.item_diabetesinfo);
+        TextView itemDateTime2 = view.findViewById(R.id.item_datetime2);
+        TextView itemEat2 = view.findViewById(R.id.item_eat2);
+        TextView itemBloodhigh = view.findViewById(R.id.item_high);
+        TextView itemBloodlow = view.findViewById(R.id.item_low);
 
-        itemDateTime.setText(date + " " + time);
-        itemEat.setText(eat);
-        itemDiabetesinfo.setText(diabetesinfo);
+        itemDateTime2.setText(date + " " + time);
+        itemEat2.setText(eats);
+        itemBloodhigh.setText(bloodhigh+"/");
+        itemBloodlow.setText(bloodlow);
 
-        RelativeLayout layout = view.findViewById(R.id.diabetes_layout);
+        LinearLayout layout = view.findViewById(R.id.blood_pressure_layout);
         layout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
@@ -85,9 +90,9 @@ public class DiabetesAdapter extends BaseAdapter {
             }
         });
 
-
         return view;
     }
+
     private AlertDialog createDialogBox(final String key){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
@@ -99,7 +104,7 @@ public class DiabetesAdapter extends BaseAdapter {
 
             public void onClick(DialogInterface dialog, int whichButton){
                 FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                firebaseDatabase.getReference().child("diabetes").child(caredUser.getUid()).child(key).removeValue();
+                firebaseDatabase.getReference().child("blood_pressure").child(caredUser.getUid()).child(key).removeValue();
                 dialog.dismiss();
             }
 

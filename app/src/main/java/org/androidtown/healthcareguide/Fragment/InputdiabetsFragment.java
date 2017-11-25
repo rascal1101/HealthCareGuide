@@ -13,6 +13,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.androidtown.healthcareguide.Activity.Select_Activity;
@@ -105,8 +107,16 @@ public class InputdiabetsFragment extends Fragment {
                 di.setEat(eat);
 
                 FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                firebaseDatabase.getReference().child("diabetes").child(caredUser.getUid()).push().setValue(di);
-                Toast.makeText(getContext(), "저장 성공", Toast.LENGTH_SHORT).show();
+                DatabaseReference dr = firebaseDatabase.getReference().child("diabetes").child(caredUser.getUid()).push();
+                di.setKey(dr.getKey());
+                dr.setValue(di)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getContext(), "저장 성공", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
             }
         });
 

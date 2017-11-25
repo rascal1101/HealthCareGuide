@@ -98,23 +98,6 @@ public class UserStateGraphActivity extends AppCompatActivity {
 
 
         sdf = new SimpleDateFormat("MM/dd");
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(new DataPoint[]{
-
-                new DataPoint(new Date(2017,11,20), 120),
-                new DataPoint(new Date(2017,11,21), 130),
-                new DataPoint(new Date(2017,11,22), 125),
-                new DataPoint(new Date(2017,11,23), 123),
-                new DataPoint(new Date(2017,11,24), 124)
-        });
-
-
-        LineGraphSeries<DataPoint> series2 = new LineGraphSeries<DataPoint>(new DataPoint[]{
-                new DataPoint(new Date(2017,11,20), 90),
-                new DataPoint(new Date(2017,11,21), 100),
-                new DataPoint(new Date(2017,11,22), 95),
-                new DataPoint(new Date(2017,11,23), 92),
-                new DataPoint(new Date(2017,11,24), 90)
-        });
         graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter(){
             @Override
             public String formatLabel(double value, boolean isValueX) {
@@ -125,8 +108,10 @@ public class UserStateGraphActivity extends AppCompatActivity {
                 }
             }
         });
-        //graph.addSeries(series);
-        //graph.addSeries(series2);
+        graph.getViewport().setMinY(0);
+        graph.getViewport().setMaxY(400);
+        graph.getViewport().setYAxisBoundsManual(true);
+
 
     }
 

@@ -9,8 +9,15 @@ public class DiabetesInformation {
     private String time;
     private String eat;
     private String diabetesinfo;
+    private String key;
 
+    public String getKey() {
+        return key;
+    }
 
+    public void setKey(String key) {
+        this.key = key;
+    }
 
     public DiabetesInformation(){}
 

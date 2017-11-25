@@ -61,7 +61,8 @@ public class Select_Activity extends AppCompatActivity {
                     break;
 
                 case R.id.bt_blood:
-
+                    Intent intent2 = new Intent(Select_Activity.this, BloodPressureActivity.class);
+                    startActivity(intent2);
                     break;
 
                 case R.id.bt_symptom:
