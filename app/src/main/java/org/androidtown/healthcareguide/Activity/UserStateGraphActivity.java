@@ -49,7 +49,7 @@ public class UserStateGraphActivity extends AppCompatActivity {
         setUsers();
         initView();
         setGraphView();
-        getDiabetesListFromFirebase();
+        //getDiabetesListFromFirebase();
         getBPListFromFirebase();
     }
 
@@ -59,10 +59,12 @@ public class UserStateGraphActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 bloodPressureList.clear();
+                int c=0;
                 for(DataSnapshot ds : dataSnapshot.getChildren()){
                     BloodPressureInformation bpi =ds.getValue(BloodPressureInformation.class);
-                    //textView.setText(bpi.getKey()+"\n");
+                    textView.append(c + bpi.getKey()+"\n");
                     bloodPressureList.add(bpi);
+                    c++;
                 }
 
                 DataPoint[] dataPointsHigh = new DataPoint[bloodPressureList.size()];
@@ -117,11 +119,13 @@ public class UserStateGraphActivity extends AppCompatActivity {
 
             }
 
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
+
     }
 
     public void getDiabetesListFromFirebase(){
