@@ -81,7 +81,7 @@ public class CarePeopleListAdapter extends BaseAdapter {
 
     public void callIntent(int position){
         User selectedUser = list.get(position);
-        
+
         Intent intent = new Intent(context, Select_Activity.class);
         intent.putExtra("name",selectedUser.getName());
         intent.putExtra("email",selectedUser.getEmail());

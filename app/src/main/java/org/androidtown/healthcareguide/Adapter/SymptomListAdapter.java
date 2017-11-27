@@ -71,6 +71,8 @@ public class SymptomListAdapter extends BaseAdapter {
 
         ImageView imageView = view.findViewById(R.id.symptom_image);
         TextView textView = view.findViewById(R.id.symptom_content);
+        imageView.setVisibility(View.GONE);
+        textView.setVisibility(View.GONE);
 
         if(content==null){
             Glide.with(context).load(imageUrl).into(imageView);

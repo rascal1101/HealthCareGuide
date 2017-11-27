@@ -117,13 +117,9 @@ public class LoginActivity extends AppCompatActivity {
                                        public void onDataChange(DataSnapshot dataSnapshot) {
                                            progressDialog.dismiss();
                                            String name = dataSnapshot.child("name").getValue(String.class);
-                                           //String mode = dataSnapshot.child("mode").getValue(String.class);
+
                                            Intent intent;
-                                           //if(mode.equals("normal")){
                                            intent = new Intent(LoginActivity.this, CarelistActivity.class);
-//                                           }else{
-//                                               intent = new Intent(LoginActivity.this, CarelistForDoctorActivity.class);
-//                                           }
                                            intent.putExtra("uid", uid);
                                            intent.putExtra("email", email);
                                            intent.putExtra("name",name);
