@@ -7,8 +7,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import org.androidtown.healthcareguide.Model.BloodPressureInformation;
+import org.androidtown.healthcareguide.Model.DiabetesInformation;
 import org.androidtown.healthcareguide.Model.User;
 import org.androidtown.healthcareguide.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by yjhyj on 2017-11-19.
@@ -18,6 +29,12 @@ public class Select_Activity extends AppCompatActivity {
 
     public static User caredUser;
     public static User currentUser;
+    public static DatabaseReference drDiabetes;
+    public static DatabaseReference drBloodPressure;
+    public static DatabaseReference drSymptom;
+    public static List<DiabetesInformation> dbList;
+    public static List<DiabetesInformation> daList;
+    public static List<BloodPressureInformation> bpList;
     private TextView textView;
 
     @Override
@@ -27,6 +44,47 @@ public class Select_Activity extends AppCompatActivity {
 
         setUser();
         initView();
+        getListFromFirebase();
+    }
+
+    private void getListFromFirebase() {
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseDatabase.getReference().child("blood_pressure").child(caredUser.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                bpList.clear();
+                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                    BloodPressureInformation bpi = ds.getValue(BloodPressureInformation.class);
+                    bpList.add(bpi);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        firebaseDatabase.getReference().child("diabetes").child(caredUser.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                dbList.clear();
+                daList.clear();
+                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                    DiabetesInformation di = ds.getValue(DiabetesInformation.class);
+                    if(di.getEat().equals("식전")){
+                        dbList.add(di);
+                    }else{
+                        daList.add(di);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void setUser(){
@@ -39,6 +97,14 @@ public class Select_Activity extends AppCompatActivity {
     }
 
     public void initView(){
+        drBloodPressure = FirebaseDatabase.getInstance().getReference().child("blood_pressure");
+        drDiabetes = FirebaseDatabase.getInstance().getReference().child("diabetes");
+        drSymptom = FirebaseDatabase.getInstance().getReference().child("symptom");
+
+        dbList = new ArrayList<>();
+        daList = new ArrayList<>();
+        bpList = new ArrayList<>();
+
         textView = findViewById(R.id.note_name);
         textView.setText(caredUser.getName());
 

@@ -1,11 +1,13 @@
 package org.androidtown.healthcareguide.Adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -67,17 +69,21 @@ public class CareMeListAdapter extends BaseAdapter {
 
         TextView careMeName = view.findViewById(R.id.care_me_name);
         TextView careMeEmail = view.findViewById(R.id.care_me_email);
-        Button button = view.findViewById(R.id.care_me_delete);
 
         careMeName.setText(name);
         careMeEmail.setText(email);
 
-        button.setOnClickListener(new View.OnClickListener() {
+        RelativeLayout layout = view.findViewById(R.id.care_me_layout);
+        layout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onClick(View view) {
-                deleteList(position);
+            public boolean onLongClick(View view) {
+
+                AlertDialog dialog = createDialogBox(position);
+                dialog.show();
+                return false;
             }
         });
+
 
         return view;
     }
@@ -102,6 +108,38 @@ public class CareMeListAdapter extends BaseAdapter {
 
             }
         });
+    }
+
+    private AlertDialog createDialogBox(final int position){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+        //builder.setTitle("내용 삭제");
+        builder.setMessage("내용을 삭제하시겠습니까?");
+
+
+        builder.setPositiveButton("확인", new DialogInterface.OnClickListener(){
+
+            public void onClick(DialogInterface dialog, int whichButton){
+                deleteList(position);
+                dialog.dismiss();
+            }
+
+        });
+
+
+        builder.setNegativeButton("취소", new DialogInterface.OnClickListener(){
+
+            public void onClick(DialogInterface dialog, int whichButton){
+                dialog.dismiss();
+            }
+
+        });
+
+
+
+        AlertDialog dialog = builder.create();
+
+        return dialog;
     }
 
 }

@@ -90,8 +90,7 @@ public class SymptomActivity extends AppCompatActivity {
                 symptom = new Symptom();
                 symptom.setContent(s);
                 content.setText("");
-                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                DatabaseReference dr = firebaseDatabase.getReference().child("symptom").child(caredUser.getUid()).push();
+                DatabaseReference dr = Select_Activity.drSymptom.child(caredUser.getUid()).push();
                 symptom.setKey(dr.getKey());
                 dr.setValue(symptom);
             }
@@ -115,8 +114,7 @@ public class SymptomActivity extends AppCompatActivity {
     }
 
     public void getListFromFirebase(){
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        database.getReference().child("symptom").child(caredUser.getUid())
+        Select_Activity.drSymptom.child(caredUser.getUid())
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
