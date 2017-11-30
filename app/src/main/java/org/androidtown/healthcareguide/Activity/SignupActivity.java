@@ -82,7 +82,11 @@ public class SignupActivity extends AppCompatActivity {
                                 userModel.setMode("normal");
                             else
                                 userModel.setMode("doctor");
+                            User userModel2 = new User();
+                            userModel2.setEmail(userModel.getEmail());
+                            userModel2.setName(userModel.getName());
                             mDatabasereference.child("users").child(user.getUid()).setValue(userModel);
+                            mDatabasereference.child("users").child(user.getUid()).child("cpgroup").child(user.getUid()).setValue(userModel2);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("Rascal", "createUserWithEmail:failure", task.getException());
