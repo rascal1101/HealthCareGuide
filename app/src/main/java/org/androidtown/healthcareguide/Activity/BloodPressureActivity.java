@@ -41,6 +41,7 @@ public class BloodPressureActivity extends AppCompatActivity {
 
     public void initView(Bundle savedInstanceState)
     {
+        getSupportActionBar().hide();
         bloodPressureFragment1 = new BloodPressureFragment1();
         bloodPressureFragment2 =new BloodPressureFragment2();
         container= findViewById(R.id.blood_container);

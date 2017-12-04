@@ -69,6 +69,7 @@ public class SymptomActivity extends AppCompatActivity {
     }
 
     public void initView(){
+        getSupportActionBar().hide();
         listView = findViewById(R.id.symptom_list);
         textView = findViewById(R.id.symptom_user_name);
         photo = findViewById(R.id.photo);

@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -30,7 +30,7 @@ import java.util.List;
  */
 public class CareMeFragment extends Fragment {
 
-    private Button addCaringMeButton;
+    private ImageButton addCaringMeButton;
     private ListView careMeListView;
     private List<User> list;
     private User currentUser;

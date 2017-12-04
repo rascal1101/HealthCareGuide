@@ -3,31 +3,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="혈당입력"
-        android:id="@+id/inputbutton"
-        android:layout_weight="1"
-        android:onClick="selectFrag"/>
+    android:layout_height="match_parent"
+    android:background="#bbdefb">
 
-    <Button
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="혈당리스트"
-        android:id="@+id/outputbutton"
-        android:onClick="selectFrag"/>
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="혈당입력"
+            android:textSize="20sp"
+            android:id="@+id/inputbutton"
+            android:layout_weight="1"
+            android:onClick="selectFrag"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="혈당리스트"
+            android:textSize="20sp"
+            android:id="@+id/outputbutton"
+            android:onClick="selectFrag"/>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/diabets_container"></FrameLayout>
+
 </LinearLayout>
-
-  <FrameLayout
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:id="@+id/diabets_container"></FrameLayout>
-
-   </LinearLayout>

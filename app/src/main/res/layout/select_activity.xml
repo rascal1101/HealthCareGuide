@@ -1,27 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/selectpage1">
+
+    <TextView
+        android:id="@+id/note_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Name"
+        android:textSize="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="5dp"
+        />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:id="@+id/ll1">
-        <TextView
-            android:id="@+id/note_name"
-            android:layout_width="match_parent"
+        android:id="@+id/ll2"
+        android:layout_marginTop="20dp">
+
+        <ImageButton
+            android:id="@+id/bt_blood"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:textSize="20dp"
+            app:srcCompat="@drawable/bloodpressuremenu"
+            android:background="#bbdefb"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="20dp"/>
+
+        <ImageButton
+            android:id="@+id/bt_diabetes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/diabetesmenu"
+            android:background="#bbdefb"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="'s Daily Health Guide"
-            android:layout_weight="1"
-            android:textSize="20dp"
-            android:layout_gravity="center"/>
 
     </LinearLayout>
 
@@ -29,54 +49,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:id="@+id/ll2">
+        android:layout_marginTop="20dp">
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_weight="1"
+        <ImageButton
+            android:id="@+id/bt_symptom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/symptommenu"
+            android:background="#bbdefb"
             android:layout_marginTop="50dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:text="혈압수첩"
-            android:id="@+id/bt_blood"/>
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="20dp"/>
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_weight="1"
-            android:layout_marginTop="50dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:text="당뇨수첩"
-            android:id="@+id/bt_diabetes"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_weight="1"
-            android:layout_marginTop="50dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:text="증상수첩"
-            android:id="@+id/bt_symptom"/>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_weight="1"
-            android:layout_marginTop="50dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:text="그래프"
+        <ImageButton
             android:id="@+id/bt_graph"
-            />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/graphmenu"
+            android:background="#bbdefb"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"/>
+
     </LinearLayout>
 </LinearLayout>

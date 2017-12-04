@@ -26,7 +26,7 @@ public class Diabets_Activity extends AppCompatActivity {
     private Button outputbutton;
     public static User caredUser;
 
-@Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.diabets_fragment);
@@ -42,6 +42,7 @@ public class Diabets_Activity extends AppCompatActivity {
 
     public void initView(Bundle savedInstanceState)
     {
+        getSupportActionBar().hide();
         inputdiabetsFragment= new InputdiabetsFragment();
         resultdiabetsFragment=new ResultdiabetsFragment();
         container=findViewById(R.id.diabets_container);

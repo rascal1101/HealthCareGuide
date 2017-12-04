@@ -1,22 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/diabetesinput">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="혈당입력"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_margin="20dp"
-        android:textSize="30dp"/>
 
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:id="@+id/rg_eat">
+        android:id="@+id/rg_eat"
+        android:layout_marginTop="60dp">
         <RadioButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,57 +30,43 @@
     </RadioGroup>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginLeft="180dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="혈당수치"
-            android:layout_margin="10dp"
-            android:gravity="center"
-            android:layout_weight="3"
-            />
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/et_inputdiabet"
             android:layout_margin="10dp"
-            android:layout_weight="2"
-            android:inputType="number"
-            android:id="@+id/et_inputdiabet"/>
+            android:hint="rate"
+            android:textSize="30sp"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="mg/lb"
-            android:layout_weight="3"
-            />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="검사일시"
-            android:layout_margin="10dp"
-            android:gravity="center"
-            android:layout_weight="3"/>
+        android:orientation="horizontal"
+        android:layout_marginLeft="140dp"
+        android:layout_marginTop="10dp">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:id="@+id/tv_date"/>
+            android:layout_weight="1"
+            android:id="@+id/tv_date"
+            android:hint="datetime"
+            android:textSize="30sp"
+            android:layout_marginTop="15dp"/>
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:layout_weight="3"
+            android:layout_weight="1"
             android:text="입력"
+            android:textSize="15sp"
             android:id="@+id/bt_date"/>
     </LinearLayout>
 
@@ -96,7 +76,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:text="저장"
-        android:id="@+id/bt_save"/>
+        android:id="@+id/bt_save"
+        android:textSize="20sp"/>
 
 
 

@@ -97,6 +97,7 @@ public class Select_Activity extends AppCompatActivity {
     }
 
     public void initView(){
+        getSupportActionBar().hide();
         drBloodPressure = FirebaseDatabase.getInstance().getReference().child("blood_pressure");
         drDiabetes = FirebaseDatabase.getInstance().getReference().child("diabetes");
         drSymptom = FirebaseDatabase.getInstance().getReference().child("symptom");

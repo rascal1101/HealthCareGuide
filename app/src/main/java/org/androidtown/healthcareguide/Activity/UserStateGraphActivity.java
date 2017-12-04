@@ -4,9 +4,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
@@ -200,187 +197,6 @@ public class UserStateGraphActivity extends AppCompatActivity {
         bloodPressureList = Select_Activity.bpList;
     }
 
-    public void getBPListFromFirebase(){
-        Select_Activity.drBloodPressure.child(caredUser.getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                bloodPressureList.clear();
-                for(DataSnapshot ds : dataSnapshot.getChildren()){
-                    BloodPressureInformation bpi =ds.getValue(BloodPressureInformation.class);
-                    bloodPressureList.add(bpi);
-                }
-
-                DataPoint[] dataPointsHigh = new DataPoint[bloodPressureList.size()];
-                DataPoint[] dataPointsLow = new DataPoint[bloodPressureList.size()];
-
-
-                Date minDate = new Date();
-                Date maxDate = new Date();
-
-                int i=0;
-                for(BloodPressureInformation info : bloodPressureList){
-                    String date = info.getDate();
-                    int year = Integer.parseInt(date.substring(0,4));
-                    int month=11;
-                    int day=31;
-
-                    for(int j=5;j<date.length();j++){
-                        if(date.charAt(j)=='-'){
-                            month = Integer.parseInt(date.substring(5,j)) -1;
-                            day = Integer.parseInt(date.substring(j+1,date.length()));
-                            break;
-                        }
-                    }
-
-                    Date d = new Date(year,month,day);
-                    if(i==0){
-                        minDate = d;
-                        maxDate = d;
-                    }else{
-                        if(d.getTime() < minDate.getTime()){
-                            minDate = d;
-                        }
-                        if(d.getTime() > maxDate.getTime()){
-                            maxDate = d;
-                        }
-                    }
-                    dataPointsHigh[i] = new DataPoint(d,Integer.parseInt(info.getBloodHigh()));
-                    dataPointsLow[i] = new DataPoint(d,Integer.parseInt(info.getBloodLow()));
-                    i++;
-                }
-
-                bloodPressureGraph.getViewport().setMinX(minDate.getTime());
-                bloodPressureGraph.getViewport().setMaxX(maxDate.getTime());
-                bloodPressureGraph.getViewport().setXAxisBoundsManual(true);
-
-
-                highBloodPressureSeries = new PointsGraphSeries<>(dataPointsHigh);
-                lowBloodPressureSeries = new PointsGraphSeries<>(dataPointsLow);
-
-                bloodPressureGraph.addSeries(highBloodPressureSeries);
-                bloodPressureGraph.addSeries(lowBloodPressureSeries);
-            }
-
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    public void getDiabetesListFromFirebase(){
-        Select_Activity.drDiabetes.child(caredUser.getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                beforeDiabetesList.clear();
-                afterDiabetesList.clear();
-                for(DataSnapshot ds : dataSnapshot.getChildren()){
-                    DiabetesInformation di =ds.getValue(DiabetesInformation.class);
-                    if(di.getEat().equals("식전")){
-                        beforeDiabetesList.add(di);
-                    }else{
-                        afterDiabetesList.add(di);
-                    }
-                }
-
-                DataPoint[] dataPointsBefore = new DataPoint[beforeDiabetesList.size()];
-                DataPoint[] dataPointsAfter = new DataPoint[afterDiabetesList.size()];
-
-                Date minDate = new Date();
-                Date maxDate = new Date();
-
-
-                int i=0;
-                for(DiabetesInformation info : beforeDiabetesList){
-                    String date = info.getDate();
-                    int year = Integer.parseInt(date.substring(0,4));
-                    int month=11;
-                    int day=31;
-
-                    for(int j=5;j<date.length();j++){
-                        if(date.charAt(j)=='-'){
-                            month = Integer.parseInt(date.substring(5,j)) -1;
-                            day = Integer.parseInt(date.substring(j+1,date.length()));
-                            break;
-                        }
-                    }
-
-                    Date d = new Date(year,month,day);
-                    if(i==0){
-                        minDate = d;
-                        maxDate = d;
-                    }else{
-                        if(d.getTime() < minDate.getTime()){
-                            minDate = d;
-                        }
-                        if(d.getTime() > maxDate.getTime()){
-                            maxDate = d;
-                        }
-                    }
-                    dataPointsBefore[i] = new DataPoint(d,Integer.parseInt(info.getDiabetesinfo()));
-                    i++;
-                }
-                if(beforeDiabetesList.size()!=0) {
-                    beforeDiabetesGraph.getViewport().setMinX(minDate.getTime());
-                    beforeDiabetesGraph.getViewport().setMaxX(maxDate.getTime());
-                    beforeDiabetesGraph.getViewport().setXAxisBoundsManual(true);
-                }
-
-
-                i=0;
-                for(DiabetesInformation info : afterDiabetesList){
-                    String date = info.getDate();
-                    int year = Integer.parseInt(date.substring(0,4));
-                    int month=11;
-                    int day=31;
-
-
-                    for(int j=5;j<date.length();j++){
-                        if(date.charAt(j)=='-'){
-                            month = Integer.parseInt(date.substring(5,j)) -1;
-                            day = Integer.parseInt(date.substring(j+1,date.length()));
-                            break;
-                        }
-                    }
-
-                    Date d = new Date(year,month,day);
-                    if(i==0){
-                        minDate = d;
-                        maxDate = d;
-                    }else{
-                        if(d.getTime() < minDate.getTime()){
-                            minDate = d;
-                        }
-                        if(d.getTime() > maxDate.getTime()){
-                            maxDate = d;
-                        }
-                    }
-                    dataPointsAfter[i] = new DataPoint(d,Integer.parseInt(info.getDiabetesinfo()));
-                    i++;
-                }
-
-                if(afterDiabetesList.size()!=0) {
-                    afterDiabetesGraph.getViewport().setMinX(minDate.getTime());
-                    afterDiabetesGraph.getViewport().setMaxX(maxDate.getTime());
-                    afterDiabetesGraph.getViewport().setXAxisBoundsManual(true);
-                }
-
-                beforeDiabetesSeries = new PointsGraphSeries<>(dataPointsBefore);
-                afterDiabetesSeries = new PointsGraphSeries<>(dataPointsAfter);
-
-
-                beforeDiabetesGraph.addSeries(beforeDiabetesSeries);
-                afterDiabetesGraph.addSeries(afterDiabetesSeries);
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
 
     public void setUsers(){
         caredUser = Select_Activity.caredUser;
@@ -414,6 +230,7 @@ public class UserStateGraphActivity extends AppCompatActivity {
     }
 
     public void initView(){
+        getSupportActionBar().hide();
         beforeDiabetesGraph = findViewById(R.id.before_diabetes_graph);
         afterDiabetesGraph = findViewById(R.id.after_diabetes_graph);
         bloodPressureGraph = findViewById(R.id.blood_pressure_graph);

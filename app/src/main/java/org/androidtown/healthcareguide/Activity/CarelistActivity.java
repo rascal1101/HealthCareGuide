@@ -47,6 +47,7 @@ public class CarelistActivity extends AppCompatActivity {
     }
 
     public void initView(Bundle savedInstanceState){
+        getSupportActionBar().hide();
         caredPeopleFragment = new CaredPeopleFragment();
         careMeFragment = new CareMeFragment();
 

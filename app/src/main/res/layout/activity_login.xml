@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/firstpage2"
     android:orientation="vertical">
 
-
-    <TextView
+    <ImageView
+        android:id="@+id/imageView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:textColor="#000000"
-        android:textStyle="bold"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="20dp"
-        android:text="로그인" />
+        app:srcCompat="@drawable/ic_local_hospital_white_24dp"
+        android:layout_gravity="right"
+        android:layout_marginTop="170dp"
+        android:layout_marginRight="20dp"/>
 
     <EditText
         android:id="@+id/login_email_edit_text"
@@ -48,18 +47,20 @@
         <Button
             android:id="@+id/sign_up_button"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_weight="1"
-            android:text="회원가입"/>
+            android:text="회원가입"
+            android:textSize="20sp"/>
 
         <Button
             android:id="@+id/log_in_button"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_weight="1"
-            android:text="로그인"/>
+            android:text="로그인"
+            android:textSize="20sp"/>
 
     </LinearLayout>
 </LinearLayout>
